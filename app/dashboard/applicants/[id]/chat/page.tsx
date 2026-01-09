@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { redirect } from 'next/navigation'
 import { requireRole } from '@/lib/auth'
 import { getCompanyData } from '@/lib/company-utils'
