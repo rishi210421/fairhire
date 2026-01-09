@@ -61,13 +61,15 @@ export default async function ApplicantDetailPage({ params }: ApplicantDetailPag
   }
 
   // Verify this application belongs to company's job
-  const job = application.jobs as any;
+   const job = (application as any).jobs;
+
   if (job.company_id !== data.company.id) {
     redirect('/dashboard/applicants');
   }
 
   // Get student profile
-  const student = application.students as any;
+  const student = (application as any).students;
+//  const student = application.students as any;
   const { data: studentProfile } = await supabase
     .from('profiles')
     .select('*')
