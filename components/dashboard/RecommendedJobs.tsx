@@ -4,9 +4,9 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { Briefcase, Clock, Users, IndianRupee } from 'lucide-react';
 import { formatDate, formatCurrency, isPastDeadline } from '@/lib/utils';
-import { createClient } from '@/lib/supabase/client';
+//import { createClient } from '@/lib/supabase/client';
 import type { Job, Application, Student } from '@/types/database';
-
+import { supabase } from '@/lib/supabase/client';
 interface RecommendedJobsProps {
   jobs: Job[];
   applications: Application[];
@@ -14,7 +14,7 @@ interface RecommendedJobsProps {
 }
 
 export default function RecommendedJobs({ jobs, applications, student }: RecommendedJobsProps) {
-  const supabase = createClient(); // ✅ FIX: create client properly
+  //const supabase = createClient(); // ✅ FIX: create client properly
 
   const [loading, setLoading] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);

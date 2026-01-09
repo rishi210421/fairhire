@@ -2,15 +2,15 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { createClient } from '@/lib/supabase/client';
-
+//import { createClient } from '@/lib/supabase/client';
+import { supabase } from '@/lib/supabase/client';
 interface SignupFormProps {
   role: 'student' | 'company';
 }
 
 export default function SignupForm({ role }: SignupFormProps) {
   const router = useRouter();
-  const supabase = createClient(); // ✅ BROWSER CLIENT
+  //const supabase = createClient(); // ✅ BROWSER CLIENT
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);

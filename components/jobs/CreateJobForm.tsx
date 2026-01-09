@@ -2,15 +2,15 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { createClient } from '@/lib/supabase/client';
-
+//import { createClient } from '@/lib/supabase/client';
+import { supabase } from '@/lib/supabase/client';
 interface CreateJobFormProps {
   companyId: string;
 }
 
 export default function CreateJobForm({ companyId }: CreateJobFormProps) {
   const router = useRouter();
-  const supabase = createClient(); // ✅ BROWSER CLIENT
+  //const supabase = createClient(); // ✅ BROWSER CLIENT
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);

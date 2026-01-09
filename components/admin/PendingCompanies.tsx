@@ -1,8 +1,7 @@
 'use client';
-
+import { supabase } from '@/lib/supabase/client';
 import { useState } from 'react';
 import { formatDate } from '@/lib/utils';
-import { createClient } from '@/lib/supabase/client';
 import { CheckCircle2, XCircle, Loader2 } from 'lucide-react';
 
 interface Company {
