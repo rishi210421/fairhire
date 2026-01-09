@@ -22,26 +22,9 @@ export default async function CompanyChatPage({ params }: CompanyChatPageProps) 
   const supabase = await createClient();
 
   // Get application details
-  const { data: application } = await supabase
-    .from('applications')
-    .select(`
-      *,
-      jobs (
-        id,
-        title,
-        company_id
-      ),
-      students (
-        id,
-        profile_id
-      )
-    `)
-    .eq('id', params.id)
-    .single();
-
-  if (!application) {
-    redirect('/dashboard/applicants');
-  }
+const application: any = data.applications.find(
+  (a: any) => a.id === params.id
+)
 
   // Verify this application belongs to company's job
   const job = application.jobs as any;
