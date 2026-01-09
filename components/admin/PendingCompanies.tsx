@@ -27,7 +27,7 @@ interface PendingCompaniesProps {
 }
 
 export default function PendingCompanies({ companies: initialCompanies }: PendingCompaniesProps) {
-  const supabase = createClient(); // ✅ MUST CREATE CLIENT IN BROWSER
+  const supabase = createClient(); 
 
   const [companies, setCompanies] = useState(initialCompanies);
   const [loading, setLoading] = useState<string | null>(null);
