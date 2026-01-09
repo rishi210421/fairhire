@@ -21,10 +21,7 @@ export default async function CompanyChatPage({ params }: CompanyChatPageProps) 
 
   const supabase = await createClient()
 
-  // =========================
-  // APPLICATION
-  // =========================
-  const { data: application } = await supabase
+  const { data: rawApplication } = await supabase
     .from('applications')
     .select(`
       *,
@@ -41,19 +38,17 @@ export default async function CompanyChatPage({ params }: CompanyChatPageProps) 
     .eq('id', params.id)
     .single()
 
-  if (!application) {
+  if (!rawApplication) {
     redirect('/dashboard/applicants')
   }
 
+  const application = rawApplication as any
   const job = application.jobs as any
 
   if (!job || job.company_id !== data.company.id) {
     redirect('/dashboard/applicants')
   }
 
-  // =========================
-  // CHAT STATUS
-  // =========================
   const chatEnabled = ['shortlisted', 'interview_scheduled', 'selected'].includes(
     application.status
   )
@@ -62,9 +57,6 @@ export default async function CompanyChatPage({ params }: CompanyChatPageProps) 
     redirect(`/dashboard/applicants/${params.id}`)
   }
 
-  // =========================
-  // STUDENT
-  // =========================
   const student = application.students as any
   const receiverId = student?.profile_id
 
@@ -81,9 +73,6 @@ export default async function CompanyChatPage({ params }: CompanyChatPageProps) 
   const studentName =
     (studentProfile as any)?.full_name || 'Unknown Student'
 
-  // =========================
-  // MESSAGES
-  // =========================
   const { data: messages } = await supabase
     .from('messages')
     .select(`
