@@ -103,11 +103,11 @@ export default async function CompanyChatPage({ params }: CompanyChatPageProps) 
 
         {/* Chat */}
         <ChatInterface
-          applicationId={params.id}
-          senderId={profile.id}
-          receiverId={receiverId}
-          initialMessages={messages || []}
-        />
+  applicationId={params.id}
+  senderId={data.profile.id}
+  receiverId={receiverId}
+  initialMessages={messages || []}
+/>
       </main>
     </div>
   )
