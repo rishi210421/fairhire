@@ -5,7 +5,7 @@ import CompanyHeader from '@/components/dashboard/CompanyHeader';
 import CompanyAnalytics from '@/components/analytics/CompanyAnalytics';
 
 export default async function AnalyticsPage() {
-  const { user, profile } = await requireRole(['company']);
+  const { user, profile } = await requireRole(['company']) as any;
 
   if (profile.role !== 'company') {
     redirect('/dashboard');
