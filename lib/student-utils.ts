@@ -11,35 +11,20 @@ export async function getStudentData() {
     throw new Error('Not a student');
   }
 
-// =========================
-// GET STUDENT (DO NOT CREATE)
-// =========================
+  // =========================
+  // GET STUDENT (NO AUTO CREATE)
+  // =========================
 
-const { data: student, error: studentError } = await supabase
-  .from('students')
-  .select('*')
-  .eq('profile_id', profile.id)
-  .single();
-
-if (studentError || !student) {
-  console.error('Student fetch failed:', studentError);
-  throw new Error('Student profile not found. Please complete signup again.');
-}
-
-
-  const { data: newStudent, error: refetchError } = await supabase
+  const { data: student, error: studentError } = await supabase
     .from('students')
     .select('*')
     .eq('profile_id', profile.id)
     .single();
 
-  if (refetchError || !newStudent) {
-    throw new Error('Student record still not found after create');
+  if (studentError || !student) {
+    console.error('Student fetch failed:', studentError);
+    throw new Error('Student profile not found. Please signup again.');
   }
-
-  student = newStudent;
-}
-
 
   // =========================
   // GET ACTIVE JOBS
