@@ -1,0 +1,91 @@
+import Link from 'next/link';
+import { formatDate } from '@/lib/utils';
+import type { Application } from '@/types/database';
+import { CheckCircle2, Clock, XCircle, AlertCircle, FileCheck } from 'lucide-react';
+
+interface ApplicationStatusProps {
+  applications: Application[];
+}
+
+const statusConfig: Record<string, { label: string; color: string; icon: any }> = {
+  applied: { label: 'Applied', color: 'bg-blue-100 text-blue-800', icon: Clock },
+  shortlisted: { label: 'Shortlisted', color: 'bg-yellow-100 text-yellow-800', icon: AlertCircle },
+  interview_scheduled: { label: 'Interview Scheduled', color: 'bg-purple-100 text-purple-800', icon: Clock },
+  rejected: { label: 'Rejected', color: 'bg-red-100 text-red-800', icon: XCircle },
+  selected: { label: 'Selected', color: 'bg-green-100 text-green-800', icon: CheckCircle2 },
+  offer_verified: { label: 'Offer Verified', color: 'bg-indigo-100 text-indigo-800', icon: FileCheck },
+};
+
+export default function ApplicationStatus({ applications }: ApplicationStatusProps) {
+  if (applications.length === 0) {
+    return (
+      <div className="bg-white rounded-lg shadow p-8 text-center">
+        <p className="text-gray-600">No applications yet. Start applying to jobs!</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="bg-white rounded-lg shadow overflow-hidden">
+      <table className="min-w-full divide-y divide-gray-200">
+        <thead className="bg-gray-50">
+          <tr>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Job Title
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Company
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Status
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Applied Date
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Actions
+            </th>
+          </tr>
+        </thead>
+        <tbody className="bg-white divide-y divide-gray-200">
+          {applications.map((application) => {
+            const job = (application as any).jobs;
+            const companyName = job?.companies?.company_name || 'Unknown Company';
+            const config = statusConfig[application.status] || statusConfig.applied;
+            const StatusIcon = config.icon;
+
+            return (
+              <tr key={application.id} className="hover:bg-gray-50">
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <div className="text-sm font-medium text-gray-900">
+                    {job?.title || 'Unknown Job'}
+                  </div>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <div className="text-sm text-gray-600">{companyName}</div>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${config.color}`}>
+                    <StatusIcon className="h-3 w-3 mr-1" />
+                    {config.label}
+                  </span>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                  {formatDate(application.applied_at)}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm">
+                  <Link
+                    href={`/dashboard/applications/${application.id}`}
+                    className="text-indigo-600 hover:text-indigo-900 font-medium"
+                  >
+                    View Details
+                  </Link>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
+}
