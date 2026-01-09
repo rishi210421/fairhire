@@ -25,12 +25,11 @@ export default function LoginForm() {
 
       // Check if user is admin
       const adminEmail = process.env.NEXT_PUBLIC_ADMIN_EMAIL;
-      if (adminEmail && email === adminEmail) {
-        router.push('/admin');
-      } else {
-        router.push('/dashboard');
-      }
-      router.refresh();
+if (adminEmail && email === adminEmail) {
+  window.location.href = '/admin';
+} else {
+  window.location.href = '/dashboard';
+}
     } catch (err: any) {
       setError(err.message || 'An error occurred during login');
     } finally {

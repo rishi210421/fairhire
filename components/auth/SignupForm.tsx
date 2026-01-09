@@ -9,7 +9,7 @@ interface SignupFormProps {
 }
 
 export default function SignupForm({ role }: SignupFormProps) {
-  const router = useRouter();
+  //const router = useRouter();
   //const supabase = createClient(); // ✅ BROWSER CLIENT
 
   const [loading, setLoading] = useState(false);
@@ -135,9 +135,7 @@ export default function SignupForm({ role }: SignupFormProps) {
 
         if (companyError) throw companyError;
       }
-
-      router.push('/dashboard');
-      router.refresh();
+       window.location.href = '/dashboard';
     } catch (err: any) {
       console.error(err);
       setError(err.message || 'An error occurred during signup');
