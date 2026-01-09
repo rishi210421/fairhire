@@ -11,30 +11,21 @@ export async function getStudentData() {
     throw new Error('Not a student');
   }
 
-  // =========================
-  // GET OR AUTO-CREATE STUDENT
-  // =========================
+// =========================
+// GET STUDENT (DO NOT CREATE)
+// =========================
 
-  let { data: student } = await supabase
-    .from('students')
-    .select('*')
-    .eq('profile_id', profile.id)
-    .single();
-if (!student) {
-  const { error: insertError } = await supabase
-    .from('students')
-    .insert({
-      profile_id: profile.id,
-      education: null,
-      skills: [],
-      resume_url: null,
-    });
+const { data: student, error: studentError } = await supabase
+  .from('students')
+  .select('*')
+  .eq('profile_id', profile.id)
+  .single();
 
-  if (insertError && insertError.code !== '23505') {
-    // 23505 = duplicate key (means row already exists)
-    console.error('Student auto-create failed:', insertError);
-    throw new Error('Failed to create student profile');
-  }
+if (studentError || !student) {
+  console.error('Student fetch failed:', studentError);
+  throw new Error('Student profile not found. Please complete signup again.');
+}
+
 
   const { data: newStudent, error: refetchError } = await supabase
     .from('students')
