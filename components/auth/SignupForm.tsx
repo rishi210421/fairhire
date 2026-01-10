@@ -72,16 +72,24 @@ export default function SignupForm({ role }: SignupFormProps) {
 
     try {
       // 1. Sign up auth user
-      const { data: authData, error: signUpError } =
-        await supabase.auth.signUp({
-          email,
-          password,
-        });
+const { error: signUpError } = await supabase.auth.signUp({
+  email,
+  password,
+});
 
-      if (signUpError) throw signUpError;
-      if (!authData.user) throw new Error('User not created');
+if (signUpError) throw signUpError;
 
-      const userId = authData.user.id;
+// 🔥 FORCE LOGIN AFTER SIGNUP (THIS CREATES SESSION COOKIE)
+const { data: loginData, error: loginError } =
+  await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
+
+if (loginError) throw loginError;
+
+const userId = loginData.user.id;
+
 
       // 2. Create profile
       const { error: profileError } = await supabase.from('profiles').insert({
